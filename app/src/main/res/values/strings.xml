@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">GeolocUPS</string>
+    <string name="title_activity_geolocalisation_maps">Map</string>
+</resources>
