@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "242137147133",
+    "firebase_url": "https://geolocups.firebaseio.com",
+    "project_id": "geolocups",
+    "storage_bucket": "geolocups.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242137147133:android:1620c01e512eee66",
+        "android_client_info": {
+          "package_name": "com.m2dl.geolocups.geolocups"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "242137147133-6184omjkuhsjui3ruk2h2uusp670sq01.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCC-LR1aqpcpp-apaDbsDvgbLeFQAwIDxo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
