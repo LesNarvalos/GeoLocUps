@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">GeolocUPS</string>
     <string name="title_activity_geolocalisation_maps">Map</string>
+    <string name="ma_fac">Ma fac</string>
+    <string name="configuration">Configuration</string>
+    <string name="mes_cours">Mes cours</string>
+    <string name="geolocalisation">Geolocalisation</string>
+    <string name="d_tection_d_anomalie">Détection d’anomalie</string>
+    <string name="emploie_du_temps">Emploie du temps</string>
+    <string name="information">Information</string>
+    <string name="qr_code">QR Code</string>
+    <string name="configurations">Configurations</string>
+    <string name="param_tres">Paramètres</string>
 </resources>

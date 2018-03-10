@@ -1,7 +1,12 @@
 package com.m2dl.geolocups.geolocups;
 
-import android.support.v4.app.FragmentActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -10,10 +15,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class GeolocalisationMaps extends FragmentActivity implements OnMapReadyCallback {
+public class GeolocalisationMaps extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +28,27 @@ public class GeolocalisationMaps extends FragmentActivity implements OnMapReadyC
         mapFragment.getMapAsync(this);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_mafac :
+                //Toast.makeText(this,"ma fac menu selected", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.menu_edt :
+                Intent myIntent = new Intent(this, EDTActivity.class);
+                item.setIntent(myIntent);
+                //return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
 
     /**
      * Manipulates the map once available.
@@ -43,4 +68,5 @@ public class GeolocalisationMaps extends FragmentActivity implements OnMapReadyC
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
+
 }

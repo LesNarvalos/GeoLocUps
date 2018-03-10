@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/menu_principale"
+        app:showAsAction="always"
+        android:title="test"
+        android:icon="@drawable/ic_menu_white_24dp">
+
+        <menu>
+            <item android:id="@+id/menu_mafac"
+                android:orderInCategory="100"
+                app:showAsAction="ifRoom"
+                android:title="@string/ma_fac"
+                android:icon="@drawable/ic_layers_black_24dp">
+                <menu>
+                    <item android:id="@+id/menu_geolocalisation"
+                        android:orderInCategory="100"
+                        app:showAsAction="never"
+                        android:title="@string/geolocalisation"/>
+
+                    <item android:id="@+id/menu_detection_danomalie"
+                        android:orderInCategory="100"
+                        app:showAsAction="never"
+                        android:title="@string/d_tection_d_anomalie"/>
+                </menu>
+            </item>
+
+            <item android:id="@+id/menu_mescours"
+                android:orderInCategory="100"
+                app:showAsAction="ifRoom"
+                android:title="@string/mes_cours"
+                android:icon="@drawable/ic_book_black_24dp">
+
+                <menu>
+                    <item android:id="@+id/menu_edt"
+                        android:orderInCategory="100"
+                        app:showAsAction="never"
+                        android:title="@string/emploie_du_temps"/>
+
+                    <item android:id="@+id/menu_qr"
+                        android:orderInCategory="100"
+                        app:showAsAction="never"
+                        android:title="@string/qr_code"/>
+                </menu>
+            </item>
+
+            <item android:id="@+id/menu_configuration"
+                android:orderInCategory="100"
+                app:showAsAction="ifRoom"
+                android:title="@string/configuration"
+                android:icon="@drawable/ic_settings_black_24dp">
+                <menu>
+                    <item android:id="@+id/menu_parametres"
+                        android:orderInCategory="100"
+                        app:showAsAction="never"
+                        android:title="@string/param_tres"/>
+
+                    <item android:id="@+id/menu_information"
+                        android:orderInCategory="100"
+                        app:showAsAction="never"
+                        android:title="@string/information"/>
+                </menu>
+            </item>
+        </menu>
+
+    </item>
+</menu>
