@@ -31,8 +31,13 @@ public class EDTActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_geolocalisation:
-                Intent myIntent = new Intent(this, GeolocalisationMaps.class);
-                item.setIntent(myIntent);
+                Intent IntentGeo = new Intent(this, GeolocalisationMaps.class);
+                item.setIntent(IntentGeo);
+                return false;
+            case R.id.menu_qr :
+                Intent IntentQR = new Intent(this, QRcodeActivity.class);
+                item.setIntent(IntentQR);
+                return false;
 
             default:
                 return super.onOptionsItemSelected(item);

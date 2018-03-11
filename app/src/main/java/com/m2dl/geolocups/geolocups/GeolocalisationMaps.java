@@ -36,14 +36,16 @@ public class GeolocalisationMaps extends AppCompatActivity implements OnMapReady
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent MyIntent;
         switch (item.getItemId()){
-            case R.id.menu_mafac :
-                //Toast.makeText(this,"ma fac menu selected", Toast.LENGTH_LONG).show();
-                return true;
             case R.id.menu_edt :
-                Intent myIntent = new Intent(this, EDTActivity.class);
-                item.setIntent(myIntent);
-                //return true;
+                MyIntent= new Intent(this, EDTActivity.class);
+                item.setIntent(MyIntent);
+                return false;
+            case R.id.menu_qr :
+                MyIntent = new Intent(this, QRcodeActivity.class);
+                item.setIntent(MyIntent);
+                return false;
             default:
                 return super.onOptionsItemSelected(item);
         }
