@@ -8,8 +8,10 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -44,7 +46,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".EDTActivity" />
-        <activity android:name=".QRcodeActivity"></activity>
+        <activity android:name=".QRcodeActivity" />
+        <activity android:name=".AnomalieActivity"></activity>
     </application>
 
 </manifest>

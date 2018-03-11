@@ -46,6 +46,10 @@ public class GeolocalisationMaps extends AppCompatActivity implements OnMapReady
                 MyIntent = new Intent(this, QRcodeActivity.class);
                 item.setIntent(MyIntent);
                 return false;
+            case R.id.menu_detection_danomalie :
+                MyIntent = new Intent(this, AnomalieActivity.class);
+                item.setIntent(MyIntent);
+                return false;
             default:
                 return super.onOptionsItemSelected(item);
         }
