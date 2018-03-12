@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.m2dl.geolocups.geolocups"
         minSdkVersion 23
@@ -27,6 +27,7 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.google.android.gms:play-services:11.8.0'
+    compile 'com.google.firebase:firebase-database:11.8.0'
     compile 'com.google.firebase:firebase-core:11.8.0'
     compile 'me.dm7.barcodescanner:zxing:1.9'
     testCompile 'junit:junit:4.12'

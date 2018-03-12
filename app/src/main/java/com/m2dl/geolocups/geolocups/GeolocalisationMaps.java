@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -14,10 +15,22 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-public class GeolocalisationMaps extends AppCompatActivity implements OnMapReadyCallback {
+import java.util.logging.Logger;
+
+public class GeolocalisationMaps extends AppCompatActivity implements OnMapReadyCallback, SearchView.OnQueryTextListener {
 
     private GoogleMap mMap;
+
+    private DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+
+    private static final Logger LOGGER = Logger.getLogger(GeolocalisationMaps.class.getName());
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,8 +43,46 @@ public class GeolocalisationMaps extends AppCompatActivity implements OnMapReady
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu,menu);
+        getMenuInflater().inflate(R.menu.menu_map,menu);
         return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String text) {
+        database.child("buildings").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                // TODO Add some treatment
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                // TODO Add some treatment
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                // TODO Add some treatment
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                // TODO Add some treatment
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // TODO Add some treatment
+            }
+        });
+
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        LOGGER.info("Sends the request but do nothing");
+        return false;
     }
 
     @Override
