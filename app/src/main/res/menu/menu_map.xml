@@ -5,66 +5,85 @@
         android:id="@+id/menu_search"
         android:icon="@drawable/ic_search_black_24dp"
         android:title="Search"
-        app:showAsAction="always"
-        app:actionViewClass="android.widget.SearchView" />
-    <item android:id="@+id/menu_principale"
-        app:showAsAction="always"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_gps"
+        android:layout_width="match_parent"
+        android:icon="@drawable/ic_gps_fixed_white_24dp"
+        android:onClick="geolocalisation"
+        android:title="geolocalsation"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_principale"
+        android:icon="@drawable/ic_menu_white_24dp"
         android:title="test"
-        android:icon="@drawable/ic_menu_white_24dp">
+        app:showAsAction="always">
 
         <menu>
-            <item android:id="@+id/menu_mafac"
+            <item
+                android:id="@+id/menu_mafac"
+                android:icon="@drawable/ic_layers_black_24dp"
                 android:orderInCategory="100"
-                app:showAsAction="ifRoom"
                 android:title="@string/ma_fac"
-                android:icon="@drawable/ic_layers_black_24dp">
+                app:showAsAction="ifRoom">
                 <menu>
-                    <item android:id="@+id/menu_geolocalisation"
+                    <item
+                        android:id="@+id/menu_geolocalisation"
                         android:orderInCategory="100"
-                        app:showAsAction="never"
-                        android:title="@string/geolocalisation"/>
+                        android:title="@string/geolocalisation"
+                        app:showAsAction="never" />
 
-                    <item android:id="@+id/menu_detection_danomalie"
+                    <item
+                        android:id="@+id/menu_detection_danomalie"
                         android:orderInCategory="100"
-                        app:showAsAction="never"
-                        android:title="@string/d_tection_d_anomalie"/>
+                        android:title="@string/d_tection_d_anomalie"
+                        app:showAsAction="never" />
                 </menu>
             </item>
 
-            <item android:id="@+id/menu_mescours"
+            <item
+                android:id="@+id/menu_mescours"
+                android:icon="@drawable/ic_book_black_24dp"
                 android:orderInCategory="100"
-                app:showAsAction="ifRoom"
                 android:title="@string/mes_cours"
-                android:icon="@drawable/ic_book_black_24dp">
+                app:showAsAction="ifRoom">
 
                 <menu>
-                    <item android:id="@+id/menu_edt"
+                    <item
+                        android:id="@+id/menu_edt"
                         android:orderInCategory="100"
-                        app:showAsAction="never"
-                        android:title="@string/emploie_du_temps"/>
+                        android:title="@string/emploie_du_temps"
+                        app:showAsAction="never" />
 
-                    <item android:id="@+id/menu_qr"
+                    <item
+                        android:id="@+id/menu_qr"
                         android:orderInCategory="100"
-                        app:showAsAction="never"
-                        android:title="@string/qr_code"/>
+                        android:title="@string/qr_code"
+                        app:showAsAction="never" />
                 </menu>
             </item>
 
-            <item android:id="@+id/menu_configuration"
+            <item
+                android:id="@+id/menu_configuration"
+                android:icon="@drawable/ic_settings_black_24dp"
                 android:orderInCategory="100"
-                app:showAsAction="ifRoom"
                 android:title="@string/configuration"
-                android:icon="@drawable/ic_settings_black_24dp">
+                app:showAsAction="ifRoom">
                 <menu>
-                    <item android:id="@+id/menu_parametres"
+                    <item
+                        android:id="@+id/menu_parametres"
                         android:orderInCategory="100"
-                        app:showAsAction="never"
-                        android:title="@string/param_tres"/>
+                        android:title="@string/param_tres"
+                        app:showAsAction="never" />
 
-                    <item android:id="@+id/menu_information"
+                    <item
+                        android:id="@+id/menu_information"
                         android:orderInCategory="100"
-                        app:showAsAction="never"
-                        android:title="@string/information"/>
+                        android:title="@string/information"
+                        app:showAsAction="never" />
                 </menu>
             </item>
         </menu>
