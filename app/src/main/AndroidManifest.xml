@@ -50,12 +50,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".EDTActivity" />
-        <activity android:name=".QRcodeActivity" />
-        <activity android:name=".AnomalieActivity" />
-        <activity android:name=".InformationActivity">
-        </activity>
-        <activity android:name=".ConfigurationActivity"/>
+        <activity android:name=".EDTActivity" android:label="Emploi du temps"/>
+        <activity android:name=".QRcodeActivity" android:label="QRCode"/>
+        <activity android:name=".AnomalieActivity" android:label="Anomalie"/>
+        <activity android:name=".InformationActivity" android:label="Informations"/>
+        <activity android:name=".ConfigurationActivity" android:label="Configuration"/>
+        <activity android:name=".BuildingsActivity" android:label="Liste des batiments" />
     </application>
 
 </manifest>

@@ -2,7 +2,6 @@ package com.m2dl.geolocups.geolocups;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -10,39 +9,27 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class GeolocalisationMaps extends AppCompatActivity implements OnMapReadyCallback, SearchView.OnQueryTextListener {
+public class GeolocalisationMaps extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-
-    private DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
     private static final Logger LOGGER = Logger.getLogger(GeolocalisationMaps.class.getName());
 
@@ -68,44 +55,6 @@ public class GeolocalisationMaps extends AppCompatActivity implements OnMapReady
     }
 
     @Override
-    public boolean onQueryTextChange(String text) {
-        database.child("buildings").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                // TODO Add some treatment
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                // TODO Add some treatment
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                // TODO Add some treatment
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                // TODO Add some treatment
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // TODO Add some treatment
-            }
-        });
-
-        return true;
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String s) {
-        LOGGER.info("Sends the request but do nothing");
-        return false;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent MyIntent;
         switch (item.getItemId()){
@@ -119,6 +68,14 @@ public class GeolocalisationMaps extends AppCompatActivity implements OnMapReady
                 return false;
             case R.id.menu_detection_danomalie :
                 MyIntent = new Intent(this, AnomalieActivity.class);
+                item.setIntent(MyIntent);
+                return false;
+            case R.id.menu_information :
+                MyIntent = new Intent(this, InformationActivity.class);
+                item.setIntent(MyIntent);
+                return false;
+            case R.id.menu_parametres :
+                MyIntent = new Intent(this, ConfigurationActivity.class);
                 item.setIntent(MyIntent);
                 return false;
             default:
@@ -148,10 +105,33 @@ public class GeolocalisationMaps extends AppCompatActivity implements OnMapReady
         // Add a marker in Sydney and move the camera
         /*LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/Intent intent = getIntent();
 
+        if (intent.getStringExtra("coordonates") != null) {
+            localize(intent.getStringExtra("coordonates"));
+        }
+    }
 
+    public void printBuildings(MenuItem item) {
+        LOGGER.info("Prints buildings");
+        Intent myIntent;
+        myIntent = new Intent(this, BuildingsActivity.class);
+        item.setIntent(myIntent);
+        startActivity(myIntent);
+    }
 
+    public void localize(String coordonates) {
+        int sep = coordonates.indexOf(",");
+        double latitude = new Double(coordonates.substring(0,sep-1));
+        double longitude = new Double(coordonates.substring(sep+2,coordonates.length()));
+
+        LatLng latLng = new LatLng(latitude, longitude);
+        mMap.clear();
+        mMap.addMarker(new MarkerOptions().position(latLng).title("Building"));
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(18.0f).build();
+        LOGGER.info(cameraPosition.toString());
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
+        mMap.moveCamera(cameraUpdate);
     }
 
     public void geolocalisation(MenuItem item) {
