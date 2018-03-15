@@ -47,7 +47,8 @@
         </activity>
         <activity android:name=".EDTActivity" />
         <activity android:name=".QRcodeActivity" />
-        <activity android:name=".AnomalieActivity"></activity>
+        <activity android:name=".AnomalieActivity" />
+        <activity android:name=".BuildingsActivity" android:label="Liste des batiments"/>
     </application>
 
 </manifest>

@@ -7,8 +7,9 @@
         android:layout_width="match_parent"
         android:icon="@drawable/ic_search_black_24dp"
         android:title="search"
+        android:onClick="printBuildings"
         app:showAsAction="always"
-        app:actionViewClass="android.support.v7.widget.SearchView" />
+        />
 
     <item
         android:id="@+id/menu_gps"

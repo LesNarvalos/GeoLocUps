@@ -2,20 +2,14 @@ package com.m2dl.geolocups.geolocups;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.MatrixCursor;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.BaseColumns;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.CursorAdapter;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -28,12 +22,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.m2dl.geolocups.geolocups.domain.Building;
 
 import java.io.IOException;
 import java.util.List;
@@ -43,15 +31,9 @@ public class GeolocalisationMaps extends AppCompatActivity implements OnMapReady
 
     private GoogleMap mMap;
 
-    private DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-
     private static final Logger LOGGER = Logger.getLogger(GeolocalisationMaps.class.getName());
 
     LocationManager locationManager;
-
-    private SimpleCursorAdapter adapter;
-
-    private List<Building> buildings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,89 +43,12 @@ public class GeolocalisationMaps extends AppCompatActivity implements OnMapReady
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        final String[] from = new String[] {"cityName"};
-        final int[] to = new int[] {android.R.id.text1};
-        adapter = new SimpleCursorAdapter(mapFragment.getActivity(),
-                android.R.layout.simple_list_item_1,
-                null,
-                from,
-                to,
-                CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
-
-        database.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                buildings = (List<Building>) dataSnapshot.getValue();
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_map,menu);
-
-        SearchView searchView = (SearchView) MenuItemCompat
-                .getActionView(menu.findItem(R.id.menu_search));
-        searchView.setSuggestionsAdapter(adapter);
-        searchView.setIconifiedByDefault(false);
-        // Getting selected (clicked) item suggestion
-        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
-            @Override
-            public boolean onSuggestionClick(int position) {
-                // Your code here
-                return true;
-            }
-
-            @Override
-            public boolean onSuggestionSelect(int position) {
-                // Your code here
-                return true;
-            }
-        });
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                populateAdapter(s);
-                return false;
-            }
-        });
-
         return true;
-    }
-
-    public void populateAdapter(String text) {
-        final MatrixCursor c = new MatrixCursor(new String[]{ BaseColumns._ID, "cityName" });
-        for (int i=0; i<buildings.size(); i++) {
-            if (buildings.get(i).getName().startsWith(text.toLowerCase()))
-                c.addRow(new Object[] {i, buildings.get(i).getName()});
-        }
-        adapter.changeCursor(c);
     }
 
     @Override
@@ -191,8 +96,33 @@ public class GeolocalisationMaps extends AppCompatActivity implements OnMapReady
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
 
+        Intent intent = getIntent();
 
+        if (intent.getStringExtra("coordonates") != null) {
+            localize(intent.getStringExtra("coordonates"));
+        }
+    }
 
+    public void printBuildings(MenuItem item) {
+        LOGGER.info("Prints buildings");
+        Intent myIntent;
+        myIntent = new Intent(this, BuildingsActivity.class);
+        item.setIntent(myIntent);
+        startActivity(myIntent);
+    }
+
+    public void localize(String coordonates) {
+        int sep = coordonates.indexOf(",");
+        double latitude = new Double(coordonates.substring(0,sep-1));
+        double longitude = new Double(coordonates.substring(sep+2,coordonates.length()));
+
+        LatLng latLng = new LatLng(latitude, longitude);
+        mMap.clear();
+        mMap.addMarker(new MarkerOptions().position(latLng).title("Building"));
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(18.0f).build();
+        LOGGER.info(cameraPosition.toString());
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
+        mMap.moveCamera(cameraUpdate);
     }
 
     public void geolocalisation(MenuItem item) {
@@ -229,6 +159,7 @@ public class GeolocalisationMaps extends AppCompatActivity implements OnMapReady
                         mMap.addMarker(new MarkerOptions().position(latLng).title(str).icon(BitmapDescriptorFactory.fromResource(R.drawable.location)));
                         //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                         CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(14.0f).build();
+                        LOGGER.info(cameraPosition.toString());
                         CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
                         mMap.moveCamera(cameraUpdate);
                     } catch (IOException e) {
@@ -276,6 +207,7 @@ public class GeolocalisationMaps extends AppCompatActivity implements OnMapReady
                         mMap.addMarker(new MarkerOptions().position(latLng).title(str).icon(BitmapDescriptorFactory.fromResource(R.drawable.location)));
                         //mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                         CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(14.0f).build();
+                        LOGGER.info(cameraPosition.toString());
                         CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
                         mMap.moveCamera(cameraUpdate);
                     } catch (IOException e) {
