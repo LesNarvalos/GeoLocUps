@@ -71,6 +71,14 @@ public class AnomalieActivity extends AppCompatActivity {
                 MyIntent = new Intent(this, GeolocalisationMaps.class);
                 item.setIntent(MyIntent);
                 return false;
+            case R.id.menu_information :
+                MyIntent = new Intent(this, InformationActivity.class);
+                item.setIntent(MyIntent);
+                return false;
+            case R.id.menu_parametres :
+                MyIntent = new Intent(this, ConfigurationActivity.class);
+                item.setIntent(MyIntent);
+                return false;
             default:
                 return super.onOptionsItemSelected(item);
         }

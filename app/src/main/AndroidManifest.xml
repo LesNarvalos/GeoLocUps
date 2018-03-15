@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:uses-featureandroid="http://schemas.android.com/apk/res-auto"
     package="com.m2dl.geolocups.geolocups">
 
     <!--
@@ -16,6 +17,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature
+        android:name="android.hardware.sensor.light"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -47,7 +52,10 @@
         </activity>
         <activity android:name=".EDTActivity" />
         <activity android:name=".QRcodeActivity" />
-        <activity android:name=".AnomalieActivity"></activity>
+        <activity android:name=".AnomalieActivity" />
+        <activity android:name=".InformationActivity">
+        </activity>
+        <activity android:name=".ConfigurationActivity"/>
     </application>
 
 </manifest>

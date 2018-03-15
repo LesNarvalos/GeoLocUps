@@ -25,13 +25,6 @@ public class QRcodeActivity extends AppCompatActivity implements ZXingScannerVie
         zXingScannerView.startCamera();
     }
 
-    /*public void scan (View view){
-        zXingScannerView = new ZXingScannerView(getApplicationContext());
-        setContentView(zXingScannerView);
-        zXingScannerView.setResultHandler(this);
-        zXingScannerView.startCamera();
-    }*/
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -64,6 +57,18 @@ public class QRcodeActivity extends AppCompatActivity implements ZXingScannerVie
             case R.id.menu_edt :
                 Intent IntentEDT = new Intent(this, EDTActivity.class);
                 item.setIntent(IntentEDT);
+                return false;
+            case R.id.menu_detection_danomalie:
+                Intent Intentan = new Intent(this, AnomalieActivity.class);
+                item.setIntent(Intentan);
+                return false;
+            case R.id.menu_parametres :
+                Intent Intentparam = new Intent(this, ConfigurationActivity.class);
+                item.setIntent(Intentparam);
+                return false;
+            case R.id.menu_information :
+                Intent IntentInfo = new Intent(this, InformationActivity.class);
+                item.setIntent(IntentInfo);
                 return false;
 
             default:

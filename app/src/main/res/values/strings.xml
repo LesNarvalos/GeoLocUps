@@ -11,4 +11,5 @@
     <string name="qr_code">QR Code</string>
     <string name="configurations">Configurations</string>
     <string name="param_tres">Paramètres</string>
+    <string name="url_key">urlKey</string>
 </resources>
