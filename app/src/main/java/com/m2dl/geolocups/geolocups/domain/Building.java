@@ -5,4 +5,24 @@ package com.m2dl.geolocups.geolocups.domain;
  */
 
 public class Building {
+
+    private String name;
+
+    private String cooordonates;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCooordonates() {
+        return cooordonates;
+    }
+
+    public void setCooordonates(String cooordonates) {
+        this.cooordonates = cooordonates;
+    }
 }

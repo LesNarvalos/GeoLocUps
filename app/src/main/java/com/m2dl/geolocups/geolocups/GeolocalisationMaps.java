@@ -2,30 +2,30 @@ package com.m2dl.geolocups.geolocups;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
+import android.database.MatrixCursor;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.CursorAdapter;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.ChildEventListener;
@@ -33,12 +33,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.m2dl.geolocups.geolocups.domain.Building;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class GeolocalisationMaps extends AppCompatActivity implements OnMapReadyCallback, SearchView.OnQueryTextListener {
+public class GeolocalisationMaps extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
 
@@ -47,6 +48,10 @@ public class GeolocalisationMaps extends AppCompatActivity implements OnMapReady
     private static final Logger LOGGER = Logger.getLogger(GeolocalisationMaps.class.getName());
 
     LocationManager locationManager;
+
+    private SimpleCursorAdapter adapter;
+
+    private List<Building> buildings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,52 +62,88 @@ public class GeolocalisationMaps extends AppCompatActivity implements OnMapReady
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        final String[] from = new String[] {"cityName"};
+        final int[] to = new int[] {android.R.id.text1};
+        adapter = new SimpleCursorAdapter(mapFragment.getActivity(),
+                android.R.layout.simple_list_item_1,
+                null,
+                from,
+                to,
+                CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 
+        database.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                buildings = (List<Building>) dataSnapshot.getValue();
+            }
 
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_map,menu);
-        return true;
-    }
 
-    @Override
-    public boolean onQueryTextChange(String text) {
-        database.child("buildings").addChildEventListener(new ChildEventListener() {
+        SearchView searchView = (SearchView) MenuItemCompat
+                .getActionView(menu.findItem(R.id.menu_search));
+        searchView.setSuggestionsAdapter(adapter);
+        searchView.setIconifiedByDefault(false);
+        // Getting selected (clicked) item suggestion
+        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                // TODO Add some treatment
+            public boolean onSuggestionClick(int position) {
+                // Your code here
+                return true;
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                // TODO Add some treatment
+            public boolean onSuggestionSelect(int position) {
+                // Your code here
+                return true;
+            }
+        });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
             }
 
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                // TODO Add some treatment
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                // TODO Add some treatment
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // TODO Add some treatment
+            public boolean onQueryTextChange(String s) {
+                populateAdapter(s);
+                return false;
             }
         });
 
         return true;
     }
 
-    @Override
-    public boolean onQueryTextSubmit(String s) {
-        LOGGER.info("Sends the request but do nothing");
-        return false;
+    public void populateAdapter(String text) {
+        final MatrixCursor c = new MatrixCursor(new String[]{ BaseColumns._ID, "cityName" });
+        for (int i=0; i<buildings.size(); i++) {
+            if (buildings.get(i).getName().startsWith(text.toLowerCase()))
+                c.addRow(new Object[] {i, buildings.get(i).getName()});
+        }
+        adapter.changeCursor(c);
     }
 
     @Override
